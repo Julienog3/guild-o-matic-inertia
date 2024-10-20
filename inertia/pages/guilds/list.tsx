@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react'
+import { GuildCard } from '~/components/guilds/guild_card'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,7 +8,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '~/components/ui/breadcrumb'
-import { Card } from '~/components/ui/card'
 import {
   Pagination,
   PaginationContent,
@@ -17,12 +17,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '~/components/ui/pagination'
+import type { InferPageProps } from '@adonisjs/inertia/types'
+import type GuildController from '#controllers/guilds_controller'
 
-interface Props {
-  guilds: any[]
-}
+export default function List(props: InferPageProps<GuildController, 'index'>) {
+  const { guilds } = props
+  console.log(props)
 
-export default function List(props: Props) {
   return (
     <main className="max-w-screen-xl w-full mx-auto my-8 min-h-screen">
       <Breadcrumb>
@@ -37,9 +38,19 @@ export default function List(props: Props) {
         </BreadcrumbList>
       </Breadcrumb>
       <h1>Toutes les guildes</h1>
-      <div className="grid grid-cols-4 gap-4">
-        <Card>Test</Card>
-      </div>
+      <ul className="grid grid-cols-4 gap-4">
+        {guilds.length >= 1 ? (
+          guilds.map((guild) => (
+            <li>
+              <Link href={`/guilds/${guild.id}`}>
+                <GuildCard guild={guild} />
+              </Link>
+            </li>
+          ))
+        ) : (
+          <p>Pas de guildes</p>
+        )}
+      </ul>
       <Pagination>
         <PaginationContent>
           <PaginationItem>

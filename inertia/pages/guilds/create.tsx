@@ -1,5 +1,4 @@
 import { useForm, usePage } from '@inertiajs/react'
-import { FormEventHandler } from 'react'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,26 +7,18 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '~/components/ui/breadcrumb'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '~/components/ui/select'
 import { GuildForm } from './forms/guild_form'
 
 interface Props {
   guilds: any[]
+  categories: any[]
 }
 
 export default function Create(props: Props) {
-  const { guilds } = props
+  const { guilds, categories } = props
   const {
     props: { user },
   } = usePage()
-
-  const submit: FormEventHandler<HTMLFormElement> = (e) => {}
 
   return (
     <main className="max-w-screen-xl w-full mx-auto my-8">
@@ -48,7 +39,7 @@ export default function Create(props: Props) {
         </h2>
         <p className="leading-7 [&:not(:first-child)]:mt-4">Salut à tous.</p>
       </div>
-      <GuildForm guilds={guilds} />
+      <GuildForm guilds={guilds} categories={categories} />
     </main>
   )
 }

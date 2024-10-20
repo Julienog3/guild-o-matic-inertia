@@ -12,31 +12,44 @@ import {
 import { Input } from '~/components/ui/input'
 import { Textarea } from '~/components/ui/textarea'
 import { Button } from '~/components/ui/button'
-import { router } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import { useToast } from '~/components/ui/use-toast'
+import { Checkbox } from '~/components/ui/checkbox'
 
 const formSchema = z.object({
   gw2GuildId: z.string(),
   discordLink: z.string().url().optional(),
+  categories: z.number().array(),
   description: z.string(),
-  thumbnail: z.string().optional(),
+  thumbnail: z.any(),
 })
 
 interface Props {
   guilds: any[]
+  categories: any[]
 }
 
 export function GuildForm(props: Props) {
-  const { guilds } = props
+  const { guilds, categories } = props
 
   const { toast } = useToast()
 
+  const {
+    props: { errors },
+  } = usePage()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      categories: [],
+    },
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log({ values })
+
     router.post('/guilds', values, {
+      forceFormData: true,
       onSuccess: () => {
         toast({
           title: 'Création',
@@ -46,7 +59,7 @@ export function GuildForm(props: Props) {
       onError: () => {
         toast({
           title: 'Oopsi',
-          description: 'Problème survenu',
+          description: `Problème survenu ${JSON.stringify(errors)}`,
         })
       },
     })
@@ -77,6 +90,45 @@ export function GuildForm(props: Props) {
                   </SelectContent>
                 </Select>
               </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="categories"
+          render={() => (
+            <FormItem>
+              <FormLabel>Catégories</FormLabel>
+              {categories.map((category) => (
+                <FormField
+                  key={category.id}
+                  control={form.control}
+                  name="categories"
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={category.id}
+                        className="flex flex-row items-start space-x-3 space-y-0"
+                      >
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(category.id)}
+                            onCheckedChange={(checked: boolean) => {
+                              return checked
+                                ? field.onChange([...field.value, category.id])
+                                : field.onChange(
+                                    field.value?.filter((value) => value !== category.id)
+                                  )
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal">{category.name}</FormLabel>
+                      </FormItem>
+                    )
+                  }}
+                />
+              ))}
             </FormItem>
           )}
         />
@@ -111,11 +163,16 @@ export function GuildForm(props: Props) {
         <FormField
           control={form.control}
           name="thumbnail"
-          render={({ field }) => (
+          render={({ field: { value, onChange, ...fieldProps } }) => (
             <FormItem>
               <FormLabel>Illustration</FormLabel>
               <FormControl>
-                <Input {...field} type="file" className="w-[300px]" />
+                <Input
+                  {...fieldProps}
+                  type="file"
+                  className="w-[300px]"
+                  onChange={(event) => onChange(event.target.files && event.target.files[0])}
+                />
               </FormControl>
             </FormItem>
           )}

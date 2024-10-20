@@ -16,7 +16,7 @@ export default class GW2Service {
         },
       })
       .then(({ data }) => data)
-      .catch((err) => logger.info('error', err))
+      .catch((err) => logger.info(err))
   }
 
   async getGuild(apiKey: string, guildId: string): Promise<GW2GuildAuthenticated> {

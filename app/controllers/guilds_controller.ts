@@ -3,21 +3,36 @@ import GW2Service from '#services/gw2_service'
 import { createGuildValidator } from '#validators/guild'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
-import logger from '@adonisjs/core/services/logger'
+import { GuildsPresenter } from '#presenters/guilds_presenter'
+import env from '#start/env'
+import Category from '#models/category'
+import app from '@adonisjs/core/services/app'
+import { cuid } from '@adonisjs/core/helpers'
 
 @inject()
 export default class GuildsController {
-  constructor(protected gw2Service: GW2Service) {}
+  constructor(
+    protected gw2Service: GW2Service,
+    protected presenter: GuildsPresenter
+  ) {}
 
-  async index({ inertia }: HttpContext) {
-    const guilds = await Guild.query().preload('owner')
+  async index({ request, inertia, auth }: HttpContext) {
+    await auth.check()
+    const page = request.input('page', 1)
 
-    const guildsWithData = await Promise.all(
-      gw2Account.guild_leader.map(async (guildId) => {
-        return await this.gw2Service.getGuild(user.gw2ApiKey, guildId)
-      })
+    const guilds = await Guild.query().preload('owner').preload('categories').paginate(page, 30)
+
+    const guildsWithDetails = await Promise.all(
+      guilds.map(async (guild) => ({
+        details: await this.gw2Service.getGuild(
+          auth.user?.gw2ApiKey ?? env.get('GW2_API_KEY'),
+          guild.gw2GuildId
+        ),
+        ...guild.serialize(),
+      }))
     )
-    return await inertia.render('guilds/list', { guilds })
+
+    return await inertia.render('guilds/list', { guilds: guildsWithDetails })
   }
 
   async create({ inertia, auth }: HttpContext) {
@@ -35,17 +50,30 @@ export default class GuildsController {
       })
     )
 
-    return await inertia.render('guilds/create', { guilds })
+    const categories = await Category.query()
+
+    return await inertia.render('guilds/create', { guilds, categories })
   }
 
   async store({ response, request, auth }: HttpContext) {
     const user = await auth.getUserOrFail()
-    const payload = await request.validateUsing(createGuildValidator)
 
-    logger.info(user)
-    logger.info(payload)
+    const { thumbnail, categories, ...payload } = await request.validateUsing(createGuildValidator)
 
     const guild = await user.related('guilds').create(payload)
+
+    if (categories) {
+      await guild.related('categories').attach(categories)
+    }
+
+    if (thumbnail) {
+      const fileUrl = `${cuid()}.${thumbnail.extname}`
+      await thumbnail.move(app.makePath('uploads', 'guilds'), {
+        name: fileUrl,
+      })
+      await guild.merge({ thumbnail: '/uploads/guilds/' + fileUrl }).save()
+    }
+
     return response.redirect().back()
   }
 }
