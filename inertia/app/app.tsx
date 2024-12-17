@@ -4,7 +4,7 @@ import { hydrateRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { Layout } from '~/components/layout/layout'
 
-const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
+const appName = import.meta.env.VITE_APP_NAME || 'Guild-o-matic'
 
 createInertiaApp({
   progress: { color: '#5468FF' },

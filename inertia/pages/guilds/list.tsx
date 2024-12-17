@@ -25,7 +25,7 @@ export default function List(props: InferPageProps<GuildController, 'index'>) {
   console.log(props)
 
   return (
-    <main className="max-w-screen-xl w-full mx-auto my-8 min-h-screen">
+    <main className="max-w-screen-xl w-full mx-auto my-8 min-h-screen p-4">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -33,12 +33,17 @@ export default function List(props: InferPageProps<GuildController, 'index'>) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Guildes</BreadcrumbPage>
+            <BreadcrumbPage>Toutes les guildes</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <h1>Toutes les guildes</h1>
-      <ul className="grid grid-cols-4 gap-4">
+      <h2 className="scroll-m-20 text-white border-b border-stone-800 pb-2 text-3xl font-semibold tracking-tight mt-6 first:mt-0">
+        Toutes les guildes
+      </h2>
+      <p className="leading-7 [&:not(:first-child)]:mt-2">
+        Trouvez la guilde qui vous convient parmi la liste
+      </p>
+      <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 ">
         {guilds.length >= 1 ? (
           guilds.map((guild) => (
             <li>

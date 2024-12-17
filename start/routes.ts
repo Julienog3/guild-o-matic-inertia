@@ -34,6 +34,7 @@ router
   .group(() => {
     router.get('/', [GuildsController, 'index'])
     router.get('/create', [GuildsController, 'create']).use(middleware.auth())
+    router.get('/:id', [GuildsController, 'show'])
     router.post('/', [GuildsController, 'store']).use(middleware.auth())
   })
   .prefix('guilds')
