@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Form, FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormControl, FormField, FormItem, FormLabel } from '~/components/ui/form'
 import {
@@ -15,6 +15,7 @@ import { Button } from '~/components/ui/button'
 import { router, usePage } from '@inertiajs/react'
 import { useToast } from '~/components/ui/use-toast'
 import { Checkbox } from '~/components/ui/checkbox'
+import { Switch } from '~/components/ui/switch'
 
 const formSchema = z.object({
   gw2GuildId: z.string(),
@@ -22,16 +23,17 @@ const formSchema = z.object({
   categories: z.number().array(),
   description: z.string(),
   thumbnail: z.any(),
+  isRecruiting: z.boolean(),
 })
 
 interface Props {
-  guilds: any[]
   categories: any[]
+  guild?: any
+  guilds?: any[]
 }
 
 export function GuildForm(props: Props) {
-  const { guilds, categories } = props
-
+  const { guild, guilds, categories } = props
   const { toast } = useToast()
 
   const {
@@ -41,6 +43,8 @@ export function GuildForm(props: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      ...guild,
+      thumbnail: null,
       categories: [],
     },
   })
@@ -48,7 +52,25 @@ export function GuildForm(props: Props) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log({ values })
 
-    router.post('/guilds', values, {
+    if (guild) {
+      return router.put(`/guilds/${guild.id}`, values, {
+        forceFormData: true,
+        onSuccess: () => {
+          toast({
+            title: 'Modification',
+            description: 'Votre guilde a correctement été modifié.',
+          })
+        },
+        onError: () => {
+          toast({
+            title: 'Oopsi',
+            description: `Problème survenu ${JSON.stringify(errors)}`,
+          })
+        },
+      })
+    }
+
+    return router.post('/guilds', values, {
       forceFormData: true,
       onSuccess: () => {
         toast({
@@ -68,32 +90,33 @@ export function GuildForm(props: Props) {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="gw2GuildId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Guilde</FormLabel>
-              <FormControl>
-                <Select onValueChange={field.onChange} value={field.value} required>
-                  <SelectTrigger className="w-[260px] bg-white">
-                    <SelectValue placeholder="Sélectionner l'une de vos guildes" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {guilds.map((guild) => {
-                      return (
-                        <SelectItem key={guild.id} value={guild.id}>
-                          [{guild.tag}] {guild.name}
-                        </SelectItem>
-                      )
-                    })}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
+        {guilds && (
+          <FormField
+            control={form.control}
+            name="gw2GuildId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Guilde</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} value={field.value} required>
+                    <SelectTrigger className="w-[260px] bg-white">
+                      <SelectValue placeholder="Sélectionner l'une de vos guildes" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {guilds.map((item) => {
+                        return (
+                          <SelectItem key={item.id} value={item.id}>
+                            [{item.tag}] {item.name}
+                          </SelectItem>
+                        )
+                      })}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="categories"
@@ -155,7 +178,7 @@ export function GuildForm(props: Props) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea {...field} className="bg-white w-[420px]" required />
+                <Textarea {...field} className="w-[420px]" required />
               </FormControl>
             </FormItem>
           )}
@@ -177,7 +200,19 @@ export function GuildForm(props: Props) {
             </FormItem>
           )}
         />
-        <Button type="submit">Ajouter la guilde</Button>
+        <FormField
+          control={form.control}
+          name="isRecruiting"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Ouvert au recrutement ?</FormLabel>
+              <FormControl>
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <Button type="submit">{guild ? 'Modifier' : 'Ajouter'} la guilde</Button>
       </form>
     </FormProvider>
   )

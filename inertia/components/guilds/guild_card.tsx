@@ -31,7 +31,7 @@ export function GuildCard(props: Props) {
       </div>
       {/* <Badge className="absolute top-4 right-4">{guild.isRecruiting ? 'Ouvert' : 'Fermé'}</Badge> */}
       <img className="max-h-40 w-full object-cover" src={guild.thumbnail} alt="thumbnail" />
-      <CardContent className="flex flex-col gap-2 p-4">
+      <CardContent className="flex flex-col gap-2 p-4 bg-stone-900">
         <div className="flex gap-2">
           {guild.categories.map((category) => (
             <Badge key={category.id} variant="secondary">

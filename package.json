@@ -60,6 +60,7 @@
   },
   "dependencies": {
     "@adonisjs/auth": "^9.2.0",
+    "@adonisjs/bouncer": "^3.1.4",
     "@adonisjs/core": "^6.6.0",
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/inertia": "1.0.0-25",
@@ -81,6 +82,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@vinejs/vine": "^2.0.0",

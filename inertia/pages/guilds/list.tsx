@@ -19,6 +19,7 @@ import {
 } from '~/components/ui/pagination'
 import type { InferPageProps } from '@adonisjs/inertia/types'
 import type GuildController from '#controllers/guilds_controller'
+import { GuildsList } from '~/components/guilds/guilds_list'
 
 export default function List(props: InferPageProps<GuildController, 'index'>) {
   const { guilds } = props
@@ -43,19 +44,7 @@ export default function List(props: InferPageProps<GuildController, 'index'>) {
       <p className="leading-7 [&:not(:first-child)]:mt-2">
         Trouvez la guilde qui vous convient parmi la liste
       </p>
-      <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 ">
-        {guilds.length >= 1 ? (
-          guilds.map((guild) => (
-            <li>
-              <Link href={`/guilds/${guild.id}`}>
-                <GuildCard guild={guild} />
-              </Link>
-            </li>
-          ))
-        ) : (
-          <p>Pas de guildes</p>
-        )}
-      </ul>
+      <GuildsList guilds={guilds} />
       <Pagination>
         <PaginationContent>
           <PaginationItem>

@@ -1,6 +1,6 @@
 import Guild from '#models/guild'
 import GW2Service from '#services/gw2_service'
-import { createGuildValidator } from '#validators/guild'
+import { createGuildValidator, editGuildValidator } from '#validators/guild'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import { GuildsPresenter } from '#presenters/guilds_presenter'
@@ -9,6 +9,7 @@ import Category from '#models/category'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 import logger from '@adonisjs/core/services/logger'
+import { editGuild, removeGuild } from '#abilities/main'
 
 @inject()
 export default class GuildsController {
@@ -78,7 +79,7 @@ export default class GuildsController {
     return response.redirect().back()
   }
 
-  async show({ response, inertia, request }: HttpContext) {
+  async show({ inertia, request }: HttpContext) {
     const guildId = request.param('id')
 
     const guild = await Guild.query()
@@ -86,11 +87,53 @@ export default class GuildsController {
       .preload('owner')
       .preload('categories')
       .firstOrFail()
+
     const guildDetails = await this.gw2Service.getGuild(guild.owner.gw2ApiKey, guild.gw2GuildId)
 
-    logger.info(guild)
-    logger.info(guildDetails)
-
     return await inertia.render('guilds/show', { guild, guildDetails })
+  }
+
+  async edit({ params, inertia }: HttpContext) {
+    const guild = await Guild.query()
+      .where('id', params.id)
+      .preload('owner')
+      .preload('categories')
+      .firstOrFail()
+
+    const categories = await Category.query()
+
+    return await inertia.render('guilds/edit', { guild, categories })
+  }
+
+  async update({ params, bouncer, request, response }: HttpContext) {
+    const guild = await Guild.findOrFail(params.id)
+
+    if (await bouncer.denies(editGuild, guild)) {
+      return response.abort({ message: 'Cannot edit guild.' }, 403)
+    }
+
+    const { thumbnail, ...payload } = await request.validateUsing(editGuildValidator)
+
+    if (thumbnail) {
+      const fileUrl = `${cuid()}.${thumbnail.extname}`
+      await thumbnail.move(app.makePath('uploads', 'guilds'), {
+        name: fileUrl,
+      })
+      await guild.merge({ thumbnail: '/uploads/guilds/' + fileUrl }).save()
+    }
+
+    await guild.merge(payload).save()
+    await response.redirect().back()
+  }
+
+  async remove({ bouncer, params, response }: HttpContext) {
+    const guild = await Guild.findOrFail(params.id)
+
+    if (await bouncer.denies(removeGuild, guild)) {
+      return response.abort({ message: 'Cannot remove guild.' }, 403)
+    }
+
+    await guild.delete()
+    return response.redirect().back()
   }
 }

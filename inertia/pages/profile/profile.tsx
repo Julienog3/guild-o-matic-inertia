@@ -92,8 +92,8 @@ export default function Profile() {
   }
 
   const submit: FormEventHandler<HTMLFormElement> = async (e) => {
-    console.log('submit', data)
     e.preventDefault()
+
     router.put('/profile', data, {
       only: ['user'],
       onSuccess: () => {

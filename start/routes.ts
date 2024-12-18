@@ -21,7 +21,8 @@ router.on('/').renderInertia('home')
 
 router.get('/sign-up', [AuthController, 'signUp']).use(middleware.guest())
 router.get('/sign-in', [AuthController, 'signIn']).use(middleware.guest())
-router.get('/profile', [ProfileController, 'index']).use(middleware.auth())
+router.get('/account/profile', [ProfileController, 'index']).use(middleware.auth())
+router.get('/account/guilds', [ProfileController, 'guilds']).use(middleware.auth())
 router
   .group(() => {
     router.post('/login', [AuthController, 'login'])
@@ -35,6 +36,9 @@ router
     router.get('/', [GuildsController, 'index'])
     router.get('/create', [GuildsController, 'create']).use(middleware.auth())
     router.get('/:id', [GuildsController, 'show'])
+    router.get('/:id/edit', [GuildsController, 'edit']).use(middleware.auth())
+    router.put('/:id', [GuildsController, 'update']).use(middleware.auth())
+    router.delete('/:id', [GuildsController, 'remove']).use(middleware.auth())
     router.post('/', [GuildsController, 'store']).use(middleware.auth())
   })
   .prefix('guilds')

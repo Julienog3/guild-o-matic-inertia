@@ -12,3 +12,18 @@ export const createGuildValidator = vine.compile(
     }),
   })
 )
+
+export const editGuildValidator = vine.compile(
+  vine.object({
+    discordLink: vine.string().optional(),
+    categories: vine.array(vine.number()).optional(),
+    description: vine.string(),
+    isRecruiting: vine.boolean(),
+    thumbnail: vine
+      .file({
+        size: '2mb',
+        extnames: ['jpg', 'png'],
+      })
+      .optional(),
+  })
+)

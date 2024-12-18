@@ -30,9 +30,11 @@ export function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem asChild>
-                  <Link href="/profile">Mon compte</Link>
+                  <Link href="/account/profile">Mon compte</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>Mes guildes</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/account/guilds">Mes guildes</Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <Button className="bg-teal-800 hover:bg-teal-900" asChild>

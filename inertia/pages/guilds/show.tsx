@@ -13,10 +13,43 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '~/components/ui/breadcrumb'
-import { Head } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
+import { Button } from '~/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '~/components/ui/alert_dialog'
+import { AlertDialogCancel } from '@radix-ui/react-alert-dialog'
+import { toast } from '~/components/ui/use-toast'
 
 export default function Show(props: InferPageProps<GuildsController, 'show'>) {
   const { guild, guildDetails } = props
+
+  function deleteAccount() {
+    // const url = new URL(`/guilds/${guild.id}`)
+
+    router.delete(`/guilds/${guild.id}`, {
+      preserveScroll: true,
+      onSuccess: () => {
+        toast({
+          title: 'Suppression',
+          description: 'Votre guilde a correctement été supprimé.',
+        })
+      },
+      onError: (errors) => {
+        toast({
+          title: 'Oopsi',
+          description: `Problème survenu ${JSON.stringify(errors)}`,
+        })
+      },
+    })
+  }
 
   return (
     <>
@@ -122,6 +155,31 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
           <p>
             Créé par <span className="text-stone-700">@{guild.owner.username}</span>
           </p>
+          <div className="flex gap-2 items-center">
+            <Button asChild>
+              <Link href={`/guilds/${guild.id}/edit`}>Modifier</Link>
+            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive">Supprimer</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Êtes-vous sûr de vouloir supprimer cette guilde ?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete your account and
+                    remove your data from our servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogAction onClick={deleteAccount}>Supprimer</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </aside>
       </main>
     </>
