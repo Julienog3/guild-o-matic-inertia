@@ -4,11 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuSeparat,
-  DropdownMenuLabelor,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
 } from '../ui/dropdown_menu'
 
 export function Header() {

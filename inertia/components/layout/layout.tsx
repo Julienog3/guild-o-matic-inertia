@@ -6,11 +6,11 @@ import { Footer } from './footer'
 
 export function Layout({ children }: PropsWithChildren) {
   return (
-    <main className="min-h-screen w-full bg-stone-950">
+    <>
       <Header />
       <TooltipProvider>{children}</TooltipProvider>
       <Toaster />
       <Footer />
-    </main>
+    </>
   )
 }

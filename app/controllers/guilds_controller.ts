@@ -8,7 +8,6 @@ import env from '#start/env'
 import Category from '#models/category'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
-import logger from '@adonisjs/core/services/logger'
 import { editGuild, removeGuild } from '#abilities/main'
 
 @inject()

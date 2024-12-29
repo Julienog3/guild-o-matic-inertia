@@ -34,24 +34,28 @@ export default function SignIn() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={submit}>
-              <Label>Adresse mail</Label>
-              <Input
-                value={data.email}
-                type="email"
-                onChange={(e) => setData('email', e.target.value)}
-              />
-              <Label>Mot de passe</Label>
-              <Input
-                value={data.password}
-                type="password"
-                onChange={(e) => setData('password', e.target.value)}
-              />
+            <form onSubmit={submit} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <Label>Adresse mail</Label>
+                <Input
+                  value={data.email}
+                  type="email"
+                  onChange={(e) => setData('email', e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label>Mot de passe</Label>
+                <Input
+                  value={data.password}
+                  type="password"
+                  onChange={(e) => setData('password', e.target.value)}
+                />
+              </div>
               <Button className="mt-4">Se connecter</Button>
             </form>
           </CardContent>
         </Card>
-        <p className="leading-7 [&:not(:first-child)]:mt-6">
+        <p className="leading-7 [&:not(:first-child)]:mt-6 text-sm text-stone-500">
           Déjà un compte ?
           <Button variant="link" asChild>
             <Link href="/sign-up">S'inscrire</Link>

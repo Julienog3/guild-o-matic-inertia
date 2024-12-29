@@ -3,7 +3,6 @@ import GW2Service from '#services/gw2_service'
 import { getAccountValidator, updateUserValidator } from '#validators/profile'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
-import logger from '@adonisjs/core/services/logger'
 import env from '#start/env'
 
 export default class UsersController {
