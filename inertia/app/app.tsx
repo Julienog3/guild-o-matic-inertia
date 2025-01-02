@@ -11,13 +11,14 @@ const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 
 createInertiaApp({
   progress: { color: '#5468FF' },
-  title: (title) => `${title} - ${appName}`,
-  resolve: (name) => {
-    const page = resolvePageComponent(
+  title: (title) => `${title} | ${appName}`,
+  resolve: async (name) => {
+    const page = await resolvePageComponent(
       `../pages/${name}.tsx`,
       import.meta.glob('../pages/**/*.tsx'),
     )
 
+    //@ts-expect-error
     page.default.layout = page.default.layout || (page => <Layout children={page} />)
     return page
   },
