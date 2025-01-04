@@ -8,7 +8,7 @@ import logger from '@adonisjs/core/services/logger'
 export default class GW2Service {
   private client = axios.create({ baseURL: env.get('GW2_API_URL') })
 
-  async getAccount(apiKey?: string): Promise<GW2Account> {
+  public async getAccount(apiKey?: string): Promise<GW2Account> {
     return await this.client
       .get('/account', {
         headers: {
@@ -19,7 +19,7 @@ export default class GW2Service {
       .catch((err) => logger.info(err))
   }
 
-  async getGuild(apiKey: string, guildId: string): Promise<GW2GuildAuthenticated> {
+  public async getGuild(apiKey: string, guildId: string): Promise<GW2GuildAuthenticated> {
     logger.info(apiKey)
 
     return await this.client

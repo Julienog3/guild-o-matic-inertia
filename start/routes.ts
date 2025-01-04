@@ -20,9 +20,12 @@ const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 router.on('/').renderInertia('home')
 
 router.get('/sign-up', [AuthController, 'signUp']).use(middleware.guest())
+router.get('/sign-up/email-verification', [AuthController, 'emailVerification']).use(middleware.auth()).as('auth.email_verification')
+
 router.get('/sign-in', [AuthController, 'signIn']).use(middleware.guest())
-router.get('/account/profile', [ProfileController, 'index']).use(middleware.auth())
-router.get('/account/guilds', [ProfileController, 'guilds']).use(middleware.auth())
+router.get('/account/profile', [ProfileController, 'index']).use([middleware.auth(), middleware.verified()])
+router.get('/account/guilds', [ProfileController, 'guilds']).use([middleware.auth(), middleware.verified()])
+router.get('/verify-email', [AuthController, 'verifyEmail']).use(middleware.auth()).as('auth.verify_email')
 router
   .group(() => {
     router.post('/login', [AuthController, 'login'])
@@ -34,12 +37,12 @@ router
 router
   .group(() => {
     router.get('/', [GuildsController, 'index'])
-    router.get('/create', [GuildsController, 'create']).use(middleware.auth())
+    router.get('/create', [GuildsController, 'create']).use([middleware.auth(), middleware.verified()])
     router.get('/:id', [GuildsController, 'show'])
-    router.get('/:id/edit', [GuildsController, 'edit']).use(middleware.auth())
-    router.put('/:id', [GuildsController, 'update']).use(middleware.auth())
-    router.delete('/:id', [GuildsController, 'remove']).use(middleware.auth())
-    router.post('/', [GuildsController, 'store']).use(middleware.auth())
+    router.get('/:id/edit', [GuildsController, 'edit']).use([middleware.auth(), middleware.verified()])
+    router.put('/:id', [GuildsController, 'update']).use([middleware.auth(), middleware.verified()])
+    router.delete('/:id', [GuildsController, 'remove']).use([middleware.auth(), middleware.verified()])
+    router.post('/', [GuildsController, 'store']).use([middleware.auth(), middleware.verified()])
   })
   .prefix('guilds')
 

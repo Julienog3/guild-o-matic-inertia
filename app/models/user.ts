@@ -6,6 +6,7 @@ import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { randomUUID } from 'node:crypto'
 import Guild from '#models/guild'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
+import Token from '#models/token'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -28,12 +29,18 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare password: string
 
   @column()
+  declare isEmailVerified: boolean
+
+  @column()
   declare gw2ApiKey: string
 
   @hasMany(() => Guild, {
     foreignKey: 'ownerId',
   })
   declare guilds: HasMany<typeof Guild>
+
+  @hasMany(() => Token)
+  declare tokens: HasMany<typeof Token>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

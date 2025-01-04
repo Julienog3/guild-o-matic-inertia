@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.tailwindcss.com">
+
+  </script>
+</head>
+
+<body class="bg-stone-950">
+  <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 text-white">Bonjour {{ username }},</h1>
+  <p class="leading-7 [&:not(:first-child)]:mt-4 text-stone-500">
+    Merci de vous être inscrit sur guild-o-matic. Avant de commencer à utiliser votre compte, nous avons
+    besoin de vérifier que cette adresse email vous appartient.
+  </p>
+  <p class="leading-7 [&:not(:first-child)]:mt-4 text-stone-500">Veuillez cliquer sur le bouton ci-dessous pour confirmer votre email :</p>
+  <a class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 bg-indigo-900 text-stone-50 hover:bg-indigo-900/90 h-10 px-4 py-2" href="{{ url }}" target="_blank">Confirmer mon email</a>
+</body>
+
+</html>
