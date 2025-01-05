@@ -9,31 +9,57 @@ import Category from '#models/category'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 import { editGuild, removeGuild } from '#abilities/main'
+import logger from '@adonisjs/core/services/logger'
+import GuildService from '#services/guild_service'
 
 @inject()
 export default class GuildsController {
   constructor(
     protected gw2Service: GW2Service,
+    protected guildService: GuildService,
     protected presenter: GuildsPresenter
   ) {}
 
-  async index({ request, inertia, auth }: HttpContext) {
-    await auth.check()
+  async index({ request, inertia }: HttpContext) {
     const page = request.input('page', 1)
 
-    const guilds = await Guild.query().preload('owner').preload('categories').paginate(page, 30)
+    const { name, is_recruiting, categories } = request.qs()
 
-    const guildsWithDetails = await Promise.all(
-      guilds.map(async (guild) => ({
-        details: await this.gw2Service.getGuild(
-          guild.owner?.gw2ApiKey ?? env.get('GW2_API_KEY'),
+    let guildsQuery = Guild.query().preload('owner').preload('categories')
+    const allCategories = await Category.query()
+
+    if (is_recruiting) {
+      guildsQuery.where('is_recruiting', is_recruiting)
+    }
+
+    if (categories) {
+      const categoriesSelected = typeof categories === 'string' ? [categories] : categories
+      
+      categoriesSelected.forEach((category: string) => {
+        guildsQuery.whereHas('categories', (categoriesQuery) => {
+          categoriesQuery.where('category_id', Number(category))
+        })
+      });
+    }
+
+    if (name) {
+      guildsQuery.whereLike('name', `%${name}%`)
+    }
+
+    const guilds = await guildsQuery.paginate(page, 10)
+
+    const guildsWithDetails = {
+      meta: guilds.getMeta(),
+      data: await Promise.all(guilds.map(async (guild) => ({
+        ...guild.serialize(),
+        details: await this.gw2Service.getGuildDetails(
+          env.get('GW2_API_KEY'),
           guild.gw2GuildId
         ),
-        ...guild.serialize(),
-      }))
-    )
+      }))),
+    } 
 
-    return await inertia.render('guilds/list', { guilds: guildsWithDetails })
+    return await inertia.render('guilds/list', { guilds: guildsWithDetails, categories: allCategories })
   }
 
   async create({ response, inertia, auth }: HttpContext) {
@@ -47,7 +73,7 @@ export default class GuildsController {
 
     const guilds = await Promise.all(
       gw2Account.guild_leader.map(async (guildId) => {
-        return await this.gw2Service.getGuild(user.gw2ApiKey, guildId)
+        return await this.gw2Service.getGuildDetails(user.gw2ApiKey, guildId)
       })
     )
 
@@ -78,18 +104,17 @@ export default class GuildsController {
     return response.redirect().back()
   }
 
-  async show({ inertia, request }: HttpContext) {
-    const guildId = request.param('id')
+  async show({ inertia, params }: HttpContext) {
+    const { id } = params
 
-    const guild = await Guild.query()
-      .where('id', guildId)
-      .preload('owner')
-      .preload('categories')
-      .firstOrFail()
+    const guild = await this.guildService.find(id)
+ 
+    const guildWithDetails = {
+      ...guild.serialize(),
+      details: await this.gw2Service.getGuildDetails(guild.owner.gw2ApiKey, guild.gw2GuildId)
+    }
 
-    const guildDetails = await this.gw2Service.getGuild(guild.owner.gw2ApiKey, guild.gw2GuildId)
-
-    return await inertia.render('guilds/show', { guild, guildDetails })
+    return await inertia.render('guilds/show', { guild: guildWithDetails })
   }
 
   async edit({ params, inertia }: HttpContext) {

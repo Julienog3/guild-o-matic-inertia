@@ -11,13 +11,14 @@ import {
 import { GuildsList } from '~/components/guilds/guilds_list'
 import { Badge } from '~/components/ui/badge'
 import { Head } from '@inertiajs/react'
+import GuildsController from '#controllers/guilds_controller'
 
-export default function Guilds(props: InferPageProps<UsersController, 'index'>) {
+export default function Guilds(props: InferPageProps<GuildsController, 'index'>) {
   const { guilds } = props
 
   return (
     <>
-      <Head title="" />
+      <Head title="Toutes les guildes" />
       <main className="max-w-screen-xl w-full mx-auto my-8 min-h-screen p-4">
         <Breadcrumb>
           <BreadcrumbList>

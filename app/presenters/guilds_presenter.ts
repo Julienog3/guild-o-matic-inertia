@@ -9,12 +9,8 @@ export class GuildsPresenter {
     return {
       meta: guilds.getMeta(),
       data: guilds.map((guild) => ({
-        id: guild.id,
-        gw2_guild_id: guild.gw2GuildId,
-        owner: {
-          id: guild.owner.id,
-          username: guild.owner.username,
-        },
+        ...guild,
+        
       })),
     }
   }

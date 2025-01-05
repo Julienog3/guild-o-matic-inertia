@@ -21,7 +21,7 @@ export default class UsersController {
 
     const guildsWithDetails = await Promise.all(
       guilds.map(async (guild) => ({
-        details: await gw2Service.getGuild(
+        details: await gw2Service.getGuildDetails(
           guild.owner?.gw2ApiKey ?? env.get('GW2_API_KEY'),
           guild.gw2GuildId
         ),

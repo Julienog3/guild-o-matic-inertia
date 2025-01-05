@@ -13,7 +13,7 @@ export function GuildsList(props: Props) {
     <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 ">
       {guilds.length >= 1 ? (
         guilds.map((guild) => (
-          <li>
+          <li key={guild.id}>
             <Link href={`/guilds/${guild.id}`}>
               <GuildCard guild={guild} />
             </Link>

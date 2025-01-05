@@ -29,11 +29,9 @@ import { AlertDialogCancel } from '@radix-ui/react-alert-dialog'
 import { toast } from '~/components/ui/use-toast'
 
 export default function Show(props: InferPageProps<GuildsController, 'show'>) {
-  const { guild, guildDetails } = props
+  const { guild } = props
 
   function deleteAccount() {
-    // const url = new URL(`/guilds/${guild.id}`)
-
     router.delete(`/guilds/${guild.id}`, {
       preserveScroll: true,
       onSuccess: () => {
@@ -53,7 +51,7 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
 
   return (
     <>
-      <Head title={guildDetails.name} />
+      <Head title={guild.details.name} />
       <section className="flex flex-col p-4 items-center overflow-hidden w-full h-80 border-b border-stone-900 relative before:content-[''] before:w-full before:h-full before:block before:bg-gradient-to-t before:from-black/70 before:absolute before:top-0 before:left-0 before:z-10">
         <Breadcrumb className="relative z-10 md:max-w-screen-xl w-full md:mx-auto mt-8 text-white">
           <BreadcrumbList className="text-white">
@@ -66,13 +64,13 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-slate-300">{guildDetails.name}</BreadcrumbPage>
+              <BreadcrumbPage className="text-slate-300">{guild.details.name}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
         <div className="relative z-10 flex flex-col gap-4 items-center md:items-start max-w-screen-xl w-full h-max mx-auto mt-auto mb-12">
           <h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-white text-center">
-            [{guildDetails.tag}] {guildDetails.name}
+            [{guild.details.tag}] {guild.details.name}
           </h2>
           <ul className="flex md:flex-row flex-col gap-4 items-center">
             <li>
@@ -137,7 +135,7 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
               </div>
               <div className="flex flex-col">
                 <p className="text-stone-500 whitespace-nowrap">Niveau de la guilde</p>
-                <span className="text-white font-medium">{guildDetails.level}</span>
+                <span className="text-white font-medium">{guild.details.level}</span>
               </div>
             </li>
             <li className="flex gap-4 items-center">
@@ -147,7 +145,7 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
               <div className="flex flex-col">
                 <p className="text-stone-500">Effectif</p>
                 <span className="text-white font-medium">
-                  {guildDetails.member_count}/{guildDetails.member_capacity}
+                  {guild.details.member_count}/{guild.details.member_capacity}
                 </span>
               </div>
             </li>

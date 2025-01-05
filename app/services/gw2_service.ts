@@ -19,9 +19,7 @@ export default class GW2Service {
       .catch((err) => logger.info(err))
   }
 
-  public async getGuild(apiKey: string, guildId: string): Promise<GW2GuildAuthenticated> {
-    logger.info(apiKey)
-
+  public async getGuildDetails(apiKey: string, guildId: string): Promise<GW2GuildAuthenticated> {
     return await this.client
       .get(`/guild/${guildId}`, {
         headers: {
