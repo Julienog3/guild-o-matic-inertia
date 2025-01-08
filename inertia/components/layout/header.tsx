@@ -6,6 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '../ui/dropdown_menu'
+import { CircleUserIcon, Plus, User2Icon, UserRound } from 'lucide-react'
 
 export function Header() {
   const {
@@ -20,21 +21,11 @@ export function Header() {
         </Link>
         {user ? (
           <div className="flex items-center gap-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <span className="text-white font-medium">Bonjour {user.username}</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem asChild>
-                  <Link href="/account/profile">Mon compte</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/account/guilds">Mes guildes</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Button className="bg-teal-800 hover:bg-teal-900" asChild>
-              <Link href="/guilds/create">+ Ajouter une guilde</Link>
+            <Button asChild variant="ghost">
+              <Link href="/account/profile"><User2Icon />Mon compte</Link>              
+            </Button>
+            <Button asChild>
+              <Link href="/guilds/create"><Plus  />Ajouter une guilde</Link>
             </Button>
           </div>
         ) : (

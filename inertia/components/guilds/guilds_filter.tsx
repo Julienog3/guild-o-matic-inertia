@@ -52,7 +52,6 @@ export default function GuildsFilter(props: Props) {
 
   return (
     <section className="rounded-lg border border-stone-800 bg-stone-900 text-slate-95 p-4 mb-4">
-      <p className="text-white font-semibold mb-2">Filtrer par :</p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-4 items-end">
           <FormField 

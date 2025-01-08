@@ -42,10 +42,6 @@ export default class GuildsController {
       });
     }
 
-    if (name) {
-      guildsQuery.whereLike('name', `%${name}%`)
-    }
-
     const guilds = await guildsQuery.paginate(page, 10)
 
     const guildsWithDetails = {

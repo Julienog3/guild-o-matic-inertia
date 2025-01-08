@@ -10,18 +10,20 @@ export function GuildsList(props: Props) {
   console.log({ guilds })
 
   return (
-    <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 ">
+    <section className='flex justify-center min-h-96'>
       {guilds.length >= 1 ? (
-        guilds.map((guild) => (
-          <li key={guild.id}>
-            <Link href={`/guilds/${guild.id}`}>
-              <GuildCard guild={guild} />
-            </Link>
-          </li>
-        ))
+        <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
+          {guilds.map((guild) => (
+            <li key={guild.id}>
+              <Link href={`/guilds/${guild.id}`}>
+                <GuildCard guild={guild} />
+              </Link>
+            </li>
+          ))}
+        </ul>
       ) : (
-        <p>Pas de guildes</p>
+        <p className='text-stone-400'>Aucune guilde n'a été trouvé.</p>
       )}
-    </ul>
+    </section>
   )
 }

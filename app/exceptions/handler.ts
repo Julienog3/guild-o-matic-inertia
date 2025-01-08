@@ -32,7 +32,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    */
   async handle(error: unknown, ctx: HttpContext) {
     if (error instanceof errors.E_INVALID_CREDENTIALS) {
-      ctx.session.flash('errors', 'Invalid credentials')
+      ctx.session.flash('errors', 'Identifiants invalides')
     }
 
     return super.handle(error, ctx)

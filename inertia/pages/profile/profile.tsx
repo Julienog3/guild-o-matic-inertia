@@ -29,6 +29,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '~/components/ui/breadcrumb'
+import AccountLayout from '~/components/account/account_layout'
 
 type FormInputs = {
   username?: string
@@ -114,21 +115,9 @@ export default function Profile() {
   return (
     <>
       <Head title="Profile" />
-      <div className="max-w-screen-xl w-full mx-auto my-8">
-        <Breadcrumb className="mb-4">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Accueil</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Mon profil</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mb-4">
-          Mon profil
-        </h2>
+      <AccountLayout>
+        <h3 className="text-2xl font-semibold tracking-tight text-white">Mon profil</h3>
+        <p className="leading-7 text-stone-400 mb-4">Retrouvez l'ensemble des informations de votre compte.</p>
         <div className="flex flex-col gap-4">
           <form onSubmit={submit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
@@ -240,7 +229,7 @@ export default function Profile() {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-      </div>
+      </AccountLayout>
     </>
   )
 }

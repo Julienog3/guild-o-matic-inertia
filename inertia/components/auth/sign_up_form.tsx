@@ -34,7 +34,6 @@ const formSchema = z.object({
 export default function SignUpForm() {
   const [account, setAccount] = useState<GW2Account>()
   const [isAccountPending, setIsAccountPending] = useState(false)
-  const { errors } = usePage().props
   const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({

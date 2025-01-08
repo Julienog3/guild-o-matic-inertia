@@ -41,12 +41,9 @@ export default function List(props: InferPageProps<GuildController, 'index'>) {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h2 className="scroll-m-20 text-white border-b border-stone-800 pb-2 text-3xl font-semibold tracking-tight mt-6 first:mt-0">
+        <h2 className="scroll-m-20 text-white pb-2 text-3xl font-semibold tracking-tight mt-6 mb-2">
           Toutes les guildes
         </h2>
-        <p className="leading-7 [&:not(:first-child)]:mt-2 text-stone-500">
-          Trouvez la guilde qui vous convient parmi la liste
-        </p>
         <GuildsFilter categories={categories} />
         <GuildsList guilds={guilds.data} />
         <Pagination>

@@ -12,6 +12,7 @@ import { GuildsList } from '~/components/guilds/guilds_list'
 import { Badge } from '~/components/ui/badge'
 import { Head } from '@inertiajs/react'
 import GuildsController from '#controllers/guilds_controller'
+import AccountLayout from '~/components/account/account_layout'
 
 export default function Guilds(props: InferPageProps<GuildsController, 'index'>) {
   const { guilds } = props
@@ -19,26 +20,11 @@ export default function Guilds(props: InferPageProps<GuildsController, 'index'>)
   return (
     <>
       <Head title="Toutes les guildes" />
-      <main className="max-w-screen-xl w-full mx-auto my-8 min-h-screen p-4">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Accueil</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Mes guildes</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <h2 className="scroll-m-20 text-white border-b border-stone-800 pb-2 text-3xl font-semibold tracking-tight mt-6 first:mt-0">
-          Mes guildes <Badge>{guilds.length}</Badge>
-        </h2>
-        <p className="leading-7 [&:not(:first-child)]:mt-2 text-stone-500 mb-4">
-          L'ensemble des guildes que vous avez ajouté.
-        </p>
+      <AccountLayout>
+        <h3 className="text-2xl font-semibold tracking-tight text-white">Mes guildes</h3>
+        <p className="leading-7 text-stone-400 mb-4">Retrouvez l'ensemble des guildes que vous avez ajouté.</p>
         <GuildsList guilds={guilds} />
-      </main>
+      </AccountLayout>
     </>
   )
 }
