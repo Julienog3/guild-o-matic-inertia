@@ -21,9 +21,7 @@ export default function SignInForm() {
     resolver: zodResolver(formSchema)
   })
   const { toast } = useToast()
-  const { errors, user } = usePage().props
-
-  console.log('formState', form.formState)
+  const { errors } = usePage().props
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     router.post('/auth/login', values, {

@@ -1,7 +1,6 @@
 import { PropsWithChildren } from "react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../ui/breadcrumb";
 import { Link } from "@inertiajs/react";
-import { Badge } from "../ui/badge";
 
 interface Props extends PropsWithChildren {}
 
