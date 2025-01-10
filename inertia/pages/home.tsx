@@ -5,7 +5,7 @@ import { Button } from '~/components/ui/button'
 export default function Home() {
   return (
     <>
-      <Head title="Homepage" />
+      <Head title="Accueil" />
       <main className="flex flex-col items-center justify-center h-[calc(100vh-4rem)] p-2">
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-2 text-white">
           Guild-o-matic

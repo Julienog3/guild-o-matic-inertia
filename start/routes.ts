@@ -38,7 +38,7 @@ router
   .group(() => {
     router.get('/', [GuildsController, 'index'])
     router.get('/create', [GuildsController, 'create']).use([middleware.auth(), middleware.verified()])
-    router.get('/:id', [GuildsController, 'show'])
+    router.get('/:id', [GuildsController, 'show']).as('guilds.show')
     router.get('/:id/edit', [GuildsController, 'edit']).use([middleware.auth(), middleware.verified()])
     router.put('/:id', [GuildsController, 'update']).use([middleware.auth(), middleware.verified()])
     router.delete('/:id', [GuildsController, 'remove']).use([middleware.auth(), middleware.verified()])

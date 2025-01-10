@@ -50,8 +50,6 @@ export function GuildForm(props: Props) {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values })
-
     if (guild) {
       return router.put(`/guilds/${guild.id}`, values, {
         forceFormData: true,
@@ -212,7 +210,7 @@ export function GuildForm(props: Props) {
             </FormItem>
           )}
         />
-        <Button type="submit">{guild ? 'Modifier' : 'Ajouter'} la guilde</Button>
+        <Button disabled={!form.formState.isDirty} type="submit">{guild ? 'Modifier' : 'Ajouter'} la guilde</Button>
       </form>
     </FormProvider>
   )

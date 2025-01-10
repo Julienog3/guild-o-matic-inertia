@@ -9,8 +9,8 @@ import Category from '#models/category'
 import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 import { editGuild, removeGuild } from '#abilities/main'
-import logger from '@adonisjs/core/services/logger'
 import GuildService from '#services/guild_service'
+import { GW2GuildAuthenticated } from '../types/gw2.js'
 
 @inject()
 export default class GuildsController {
@@ -23,7 +23,7 @@ export default class GuildsController {
   async index({ request, inertia }: HttpContext) {
     const page = request.input('page', 1)
 
-    const { name, is_recruiting, categories } = request.qs()
+    const { is_recruiting, categories } = request.qs()
 
     let guildsQuery = Guild.query().preload('owner').preload('categories')
     const allCategories = await Category.query()
@@ -100,17 +100,22 @@ export default class GuildsController {
     return response.redirect().back()
   }
 
-  async show({ inertia, params }: HttpContext) {
+  async show({ inertia, params, auth }: HttpContext) {
     const { id } = params
+    await auth.check()
 
     const guild = await this.guildService.find(id)
  
     const guildWithDetails = {
-      ...guild.serialize(),
+      ...guild.serialize() as Guild,
       details: await this.gw2Service.getGuildDetails(guild.owner.gw2ApiKey, guild.gw2GuildId)
     }
 
-    return await inertia.render('guilds/show', { guild: guildWithDetails })
+    const isOwner = auth.isAuthenticated && (auth?.user?.id === guild.owner.id)
+
+    // const guildWithDetails = { ...guild.serialize() } as Guild & GW2GuildAuthenticated
+
+    return await inertia.render('guilds/show', { guild: guildWithDetails, isOwner })
   }
 
   async edit({ params, inertia }: HttpContext) {
@@ -143,7 +148,7 @@ export default class GuildsController {
     }
 
     await guild.merge(payload).save()
-    await response.redirect().back()
+    response.redirect().toRoute('guilds.show', { id: guild.id })
   }
 
   async remove({ bouncer, params, response }: HttpContext) {
