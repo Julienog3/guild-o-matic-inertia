@@ -4,7 +4,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useToast } from "../ui/use-toast";
 import ArrowUpCircleIcon from '~/assets/icons/arrow-up-circle.svg?react'
 import UserGroupIcon from '~/assets/icons/user-group.svg?react'
-import { SquarePen, Trash } from "lucide-react";
+import { SquarePenIcon, TrashIcon } from "lucide-react";
 
 interface Props {
   guild: any
@@ -34,7 +34,7 @@ export default function GuildDetails(props: Props) {
   }
 
   return (
-    <aside className="flex flex-col w-full min-w-96 md:w-fit bg-stone-900 border border-stone-800 rounded">
+    <aside className="flex flex-col w-full min-w-96 md:w-fit bg-stone-900 border border-stone-800 rounded-lg">
       <div className="flex flex-col p-4">
         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2 text-white">
           Informations en jeu
@@ -67,11 +67,15 @@ export default function GuildDetails(props: Props) {
       </div>
       {displayActions && <div className="flex gap-2 items-center border-t border-stone-800 p-4">
         <Button className="w-full" asChild>
-          <Link href={`/guilds/${guild.id}/edit`}><SquarePen /> Modifier</Link>
+          <Link href={`/guilds/${guild.id}/edit`}>
+            <SquarePenIcon className="w-4 h-4" /> Modifier
+          </Link>
         </Button>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="destructive"><Trash/> Supprimer</Button>
+            <Button variant="destructive">
+              <TrashIcon className="w-4 h-4"/> Supprimer
+            </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>

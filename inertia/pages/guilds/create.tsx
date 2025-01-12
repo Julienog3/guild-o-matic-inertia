@@ -7,7 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '~/components/ui/breadcrumb'
-import { GuildForm } from './forms/guild_form'
+import { GuildForm } from '../../components/guilds/guild_form'
 
 interface Props {
   guilds: any[]

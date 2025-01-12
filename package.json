@@ -86,7 +86,11 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.4",
+    "@radix-ui/react-toggle": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.6",
+    "@tiptap/pm": "2.11.1",
+    "@tiptap/react": "2.11.1",
+    "@tiptap/starter-kit": "2.11.1",
     "@vinejs/vine": "^3.0.0",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
@@ -109,5 +113,6 @@
       "./app/middleware/*.ts"
     ]
   },
-  "prettier": "@adonisjs/prettier-config"
+  "prettier": "@adonisjs/prettier-config",
+  "moduleResolution": "node"
 }

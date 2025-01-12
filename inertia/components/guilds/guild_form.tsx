@@ -16,6 +16,7 @@ import { router, usePage } from '@inertiajs/react'
 import { useToast } from '~/components/ui/use-toast'
 import { Checkbox } from '~/components/ui/checkbox'
 import { Switch } from '~/components/ui/switch'
+import Tiptap from '~/components/ui/tiptap'
 
 const formSchema = z.object({
   gw2GuildId: z.string(),
@@ -176,11 +177,12 @@ export function GuildForm(props: Props) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea {...field} className="w-[420px]" required />
+                <Tiptap content={field.value} onChange={field.onChange} />
               </FormControl>
             </FormItem>
           )}
         />
+        
         <FormField
           control={form.control}
           name="thumbnail"
