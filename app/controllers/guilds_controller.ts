@@ -10,7 +10,6 @@ import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 import { editGuild, removeGuild } from '#abilities/main'
 import GuildService from '#services/guild_service'
-import { GW2GuildAuthenticated } from '../types/gw2.js'
 
 @inject()
 export default class GuildsController {
@@ -34,28 +33,30 @@ export default class GuildsController {
 
     if (categories) {
       const categoriesSelected = typeof categories === 'string' ? [categories] : categories
-      
+
       categoriesSelected.forEach((category: string) => {
         guildsQuery.whereHas('categories', (categoriesQuery) => {
           categoriesQuery.where('category_id', Number(category))
         })
-      });
+      })
     }
 
     const guilds = await guildsQuery.paginate(page, 10)
 
     const guildsWithDetails = {
       meta: guilds.getMeta(),
-      data: await Promise.all(guilds.map(async (guild) => ({
-        ...guild.serialize(),
-        details: await this.gw2Service.getGuildDetails(
-          env.get('GW2_API_KEY'),
-          guild.gw2GuildId
-        ),
-      }))),
-    } 
+      data: await Promise.all(
+        guilds.map(async (guild) => ({
+          ...guild.serialize(),
+          details: await this.gw2Service.getGuildDetails(env.get('GW2_API_KEY'), guild.gw2GuildId),
+        }))
+      ),
+    }
 
-    return await inertia.render('guilds/list', { guilds: guildsWithDetails, categories: allCategories })
+    return await inertia.render('guilds/list', {
+      guilds: guildsWithDetails,
+      categories: allCategories,
+    })
   }
 
   async create({ response, inertia, auth }: HttpContext) {
@@ -105,13 +106,13 @@ export default class GuildsController {
     await auth.check()
 
     const guild = await this.guildService.find(id)
- 
+
     const guildWithDetails = {
-      ...guild.serialize() as Guild,
-      details: await this.gw2Service.getGuildDetails(guild.owner.gw2ApiKey, guild.gw2GuildId)
+      ...(guild.serialize() as Guild),
+      details: await this.gw2Service.getGuildDetails(guild.owner.gw2ApiKey, guild.gw2GuildId),
     }
 
-    const isOwner = auth.isAuthenticated && (auth?.user?.id === guild.owner.id)
+    const isOwner = auth.isAuthenticated && auth?.user?.id === guild.owner.id
 
     // const guildWithDetails = { ...guild.serialize() } as Guild & GW2GuildAuthenticated
 

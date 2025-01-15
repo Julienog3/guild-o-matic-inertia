@@ -1,4 +1,3 @@
-import Token from '#models/token'
 import User from '#models/user'
 import { TokenService } from '#services/token_service'
 import { registerUserValidator } from '#validators/auth'
@@ -19,7 +18,7 @@ export default class AuthController {
 
   async login({ auth, request, response }: HttpContext) {
     const { email, password } = request.only(['email', 'password'])
-    
+
     const user = await User.verifyCredentials(email, password)
 
     await auth.use('web').login(user)
@@ -29,7 +28,7 @@ export default class AuthController {
   @inject()
   async register({ auth, request, response }: HttpContext, tokenService: TokenService) {
     const payload = await request.validateUsing(registerUserValidator)
-    
+
     const user = await User.create(payload)
     const token = await tokenService.generateEmailVerificationToken(user)
 
@@ -41,7 +40,7 @@ export default class AuthController {
       .prefixUrl('http://localhost:3333')
       .qs({ token })
       .makeSigned('auth.verify_email', {
-        expiresIn: '3 days'
+        expiresIn: '3 days',
       })
 
     await mail.send((message) => {
@@ -51,7 +50,7 @@ export default class AuthController {
         .subject('📧 Vérification de votre adresse email')
         .htmlView('emails/verify_email', { url })
     })
-    
+
     return await response.redirect().toRoute('auth.email_verification')
   }
 
