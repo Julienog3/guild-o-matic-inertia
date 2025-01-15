@@ -33,12 +33,9 @@ export default function Create(props: Props) {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="mb-4 border-b pb-2">
-        <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 ">
-          Ajout d'une guilde
-        </h2>
-        <p className="leading-7 [&:not(:first-child)]:mt-4">Salut à tous.</p>
-      </div>
+      <h2 className="scroll-m-20 border-b border-stone-800 pb-2 text-3xl text-white font-semibold tracking-tight first:mt-0 mb-4">
+        Ajout d'une guilde
+      </h2>
       <GuildForm guilds={guilds} categories={categories} />
     </main>
   )

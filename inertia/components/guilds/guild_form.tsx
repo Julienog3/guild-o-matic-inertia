@@ -98,7 +98,7 @@ export function GuildForm(props: Props) {
                 <FormLabel>Guilde</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange} value={field.value} required>
-                    <SelectTrigger className="w-[260px] bg-white">
+                    <SelectTrigger className="w-[260px]">
                       <SelectValue placeholder="Sélectionner l'une de vos guildes" />
                     </SelectTrigger>
                     <SelectContent>
