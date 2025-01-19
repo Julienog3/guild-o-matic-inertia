@@ -72,5 +72,6 @@ jobs:
             whoami
             ls -al
             echo $RSYNC_STDOUT
+            cd ${{ secrets.TARGET }}
             pnpm install
             ENV_PATH=/etc/secrets node build/bin/server.js
