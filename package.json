@@ -93,6 +93,7 @@
     "@tiptap/starter-kit": "2.11.1",
     "@vinejs/vine": "^3.0.0",
     "axios": "^1.7.9",
+    "better-sqlite3": "^11.9.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "edge.js": "^6.2.0",

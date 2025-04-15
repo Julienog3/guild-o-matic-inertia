@@ -10,6 +10,7 @@ import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 import { editGuild, removeGuild } from '#abilities/main'
 import GuildService from '#services/guild_service'
+import logger from '@adonisjs/core/services/logger'
 
 @inject()
 export default class GuildsController {
@@ -63,7 +64,8 @@ export default class GuildsController {
     const user = await auth.getUserOrFail()
 
     if (!user.gw2ApiKey) {
-      return response.redirect().back()
+      return response.abort({ message: "User can't create guild without API key" }, 403)
+      // return response.redirect().back()
     }
 
     const gw2Account = await this.gw2Service.getAccount(user.gw2ApiKey)
