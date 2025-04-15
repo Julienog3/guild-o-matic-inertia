@@ -42,7 +42,6 @@ export function GuildCard(props: Props) {
         <CardTitle>
           [{guild.details.tag}] {guild.details.name}
         </CardTitle>
-        <CardDescription className="mb-2">{guild.excerpt}</CardDescription>
         <div className="flex items-center gap-2">
           <p className="text-sm text-white">
             Crée par <span className="text-teal-500">@{guild.owner.username}</span>

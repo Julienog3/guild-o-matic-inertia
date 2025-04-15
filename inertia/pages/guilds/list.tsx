@@ -24,12 +24,11 @@ import GuildsFilter from '~/components/guilds/guilds_filter'
 
 export default function List(props: InferPageProps<GuildController, 'index'>) {
   const { guilds, categories } = props
-  console.log(props)
 
   return (
     <>
       <Head title="Toutes les guildes" />
-      <section className="flex flex-col p-4 items-center overflow-hidden w-full h-96 relative before:content-[''] before:w-full before:h-full before:block before:bg-gradient-to-t before:from-stone-950 before:absolute before:top-0 before:left-0 before:z-10">
+      <section className="flex flex-col p-4 items-center overflow-hidden w-full h-80 relative before:content-[''] before:w-full before:h-full before:block before:bg-gradient-to-t before:from-stone-950 before:absolute before:top-0 before:left-0 before:z-10">
         <Breadcrumb className="relative z-10 md:max-w-screen-xl w-full md:mx-auto mt-16 text-white">
           <BreadcrumbList className="text-white">
             <BreadcrumbItem>
@@ -53,7 +52,7 @@ export default function List(props: InferPageProps<GuildController, 'index'>) {
           alt="thumbnail"
         />
       </section>
-      <main className="max-w-screen-xl w-full mx-auto my-8 min-h-screen p-4">
+      <main className="max-w-screen-xl w-full mx-auto my-8 min-h-screen px-4">
         <GuildsList guilds={guilds.data} />
         <Pagination>
           <PaginationContent>
