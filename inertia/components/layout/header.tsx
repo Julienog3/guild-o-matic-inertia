@@ -1,20 +1,35 @@
 import { Link, usePage } from '@inertiajs/react'
 import { Button } from '../ui/button'
-import {
-  DropdownMenuItem,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '../ui/dropdown_menu'
-import { CircleUserIcon, Plus, User2Icon, UserRound } from 'lucide-react'
+import { Plus, User2Icon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 export function Header() {
   const {
     props: { user },
   } = usePage()
 
+  const [isScrolled, setIsScrolled] = useState<boolean>(false)
+
+  const styleWhenScrolled = 'bg-stone-950/75 backdrop-blur-md border-b'
+
+  useEffect(() => {
+    document.addEventListener('scroll', () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    })
+
+    // return () => {
+    //   scrollListener
+    // }
+  }, [])
+
+  const headerStyles = `flex justify-center w-full h-16 p-4 fixed top-0 z-50 transition duration-500 backdrop-blur-none border-0 border-b-stone-800 ${isScrolled ? styleWhenScrolled : ''}`
+
   return (
-    <header className="flex justify-center w-full bg-stone-950 h-16 border-b border-b-stone-800 p-4 sticky top-0 z-50">
+    <header className={headerStyles}>
       <div className="max-w-screen-xl w-full mx-auto flex items-center justify-between">
         <Link href="/">
           <h1 className="text-white font-medium">Guild-o-matic</h1>

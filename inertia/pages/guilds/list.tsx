@@ -29,22 +29,31 @@ export default function List(props: InferPageProps<GuildController, 'index'>) {
   return (
     <>
       <Head title="Toutes les guildes" />
-      <main className="max-w-screen-xl w-full mx-auto my-8 min-h-screen p-4">
-        <Breadcrumb>
-          <BreadcrumbList>
+      <section className="flex flex-col p-4 items-center overflow-hidden w-full h-96 relative before:content-[''] before:w-full before:h-full before:block before:bg-gradient-to-t before:from-stone-950 before:absolute before:top-0 before:left-0 before:z-10">
+        <Breadcrumb className="relative z-10 md:max-w-screen-xl w-full md:mx-auto mt-16 text-white">
+          <BreadcrumbList className="text-white">
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Accueil</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Toutes les guildes</BreadcrumbPage>
+              <BreadcrumbLink href="/guilds">Toutes les guildes</BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h2 className="scroll-m-20 text-white pb-2 text-3xl font-semibold tracking-tight mt-6 mb-2">
-          Toutes les guildes
-        </h2>
-        <GuildsFilter categories={categories} />
+        <div className="max-w-screen-xl w-full mx-auto my-8 min-h-screen p-4 z-20">
+          <h2 className="scroll-m-20 text-white pb-2 text-3xl font-semibold tracking-tight mt-6 mb-2">
+            Toutes les guildes
+          </h2>
+          <GuildsFilter categories={categories} />
+        </div>
+        <img
+          className="z-0 absolute top-0 left-0 object-cover h-full w-full opacity-50"
+          src="/images/banner.jpg"
+          alt="thumbnail"
+        />
+      </section>
+      <main className="max-w-screen-xl w-full mx-auto my-8 min-h-screen p-4">
         <GuildsList guilds={guilds.data} />
         <Pagination>
           <PaginationContent>

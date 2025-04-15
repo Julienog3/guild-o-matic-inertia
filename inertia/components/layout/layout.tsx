@@ -8,7 +8,9 @@ export function Layout({ children }: PropsWithChildren) {
   return (
     <>
       <Header />
-      <TooltipProvider>{children}</TooltipProvider>
+      <TooltipProvider>
+        {children}
+        </TooltipProvider>
       <Toaster />
       <Footer />
     </>
