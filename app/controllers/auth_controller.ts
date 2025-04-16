@@ -33,7 +33,6 @@ export default class AuthController {
     const token = await tokenService.generateEmailVerificationToken(user)
 
     await auth.use('web').login(user)
-    // const domain = Env.get
 
     const url = router
       .builder()

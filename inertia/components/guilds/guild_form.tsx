@@ -57,7 +57,7 @@ export function GuildForm(props: Props) {
         onSuccess: () => {
           toast({
             title: 'Modification',
-            description: 'Votre guilde a correctement été modifié.',
+            description: `Votre guilde a correctement été modifié. ${JSON.stringify(errors)}`,
           })
         },
         onError: () => {

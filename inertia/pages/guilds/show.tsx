@@ -21,7 +21,7 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
   return (
     <>
       <Head title={guild.details.name} />
-      <section className="flex flex-col p-4 items-center overflow-hidden w-full h-96 relative before:content-[''] before:w-full before:h-full before:block before:bg-gradient-to-t before:from-stone-950 before:absolute before:top-0 before:left-0 before:z-10">
+      <section className="flex flex-col p-4 items-center overflow-hidden w-full h-96 relative before:content-[''] before:w-full before:h-full before:block before:bg-linear-to-t before:from-stone-950 before:absolute before:top-0 before:left-0 before:z-10">
         <div className="relative z-10 flex flex-col gap-4 items-center md:items-start max-w-screen-xl w-full h-max mx-auto mt-auto mb-12">
           <Breadcrumb className="relative z-10 md:max-w-screen-xl w-full md:mx-auto mt-8 text-white">
             <BreadcrumbList className="text-white">
@@ -57,7 +57,7 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
               <p className="text-stone-400 flex gap-2">
                 Publié le
                 <span className="text-white font-medium">{new Date(guild.createdAt).toLocaleDateString()}</span>
-              </p> 
+              </p>
             </li>}
             {guild.updatedAt && <li className="flex items-center gap-2">
               <ClockIcon className="w-4 h-4 stroke-stone-400" />
@@ -96,7 +96,7 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
                 </Badge>
               ))}
             </div>
-          </div> 
+          </div>
           {guild.discordLink && <Button asChild>
             <Link target="_blank" href={guild.discordLink}><MessagesSquareIcon className="w-4 h-4" /> Rejoindre le serveur Discord</Link>
           </Button>}

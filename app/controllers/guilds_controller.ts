@@ -10,7 +10,6 @@ import app from '@adonisjs/core/services/app'
 import { cuid } from '@adonisjs/core/helpers'
 import { editGuild, removeGuild } from '#abilities/main'
 import GuildService from '#services/guild_service'
-import logger from '@adonisjs/core/services/logger'
 import GuildDto from '../dto/guild.js'
 
 @inject()
@@ -19,7 +18,7 @@ export default class GuildsController {
     protected gw2Service: GW2Service,
     protected guildService: GuildService,
     protected presenter: GuildsPresenter
-  ) {}
+  ) { }
 
   async index({ request, inertia }: HttpContext) {
     const page = request.input('page', 1)
@@ -101,6 +100,7 @@ export default class GuildsController {
       await guild.merge({ thumbnail: '/uploads/guilds/' + fileUrl }).save()
     }
 
+    // return response.redirect().toRoute('guilds.show', { id: guild.id })
     return response.redirect().back()
   }
 

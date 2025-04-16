@@ -7,7 +7,6 @@ export const getAccountValidator = vine.compile(
 )
 
 export const updateUserValidator = vine.compile(
-  // @ts-expect-error
   vine.object({
     username: vine.string().trim().optional(),
     email: vine.string().email().optional(),

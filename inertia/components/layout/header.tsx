@@ -10,7 +10,7 @@ export function Header() {
 
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
 
-  const styleWhenScrolled = 'bg-stone-950/75 backdrop-blur-md border-b'
+  const styleWhenScrolled = 'bg-stone-950/75 backdrop-blur-xl border-b'
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -37,10 +37,10 @@ export function Header() {
         {user ? (
           <div className="flex items-center gap-4">
             <Button asChild variant="ghost">
-              <Link href="/account/profile"><User2Icon />Mon compte</Link>              
+              <Link href="/account/profile"><User2Icon />Mon compte</Link>
             </Button>
             <Button asChild>
-              <Link href="/guilds/create"><Plus  />Ajouter une guilde</Link>
+              <Link href="/guilds/create"><Plus />Ajouter une guilde</Link>
             </Button>
           </div>
         ) : (

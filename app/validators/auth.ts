@@ -1,7 +1,6 @@
 import vine from '@vinejs/vine'
 
 export const registerUserValidator = vine.compile(
-  //  @ts-expect-error
   vine.object({
     username: vine
       .string()
