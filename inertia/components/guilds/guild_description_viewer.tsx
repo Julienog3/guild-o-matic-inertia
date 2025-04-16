@@ -12,7 +12,7 @@ export default function GuildDescriptionViewer(props: Props) {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'prose w-full focus:outline-none prose-headings:text-stone-400 prose-p:text-stone-500 prose-strong:text-stone-500'
+        class: 'prose w-full max-w-full focus:outline-none prose-headings:text-stone-400 prose-p:text-stone-500 prose-strong:text-stone-500'
       }
     },
     extensions: [StarterKit],

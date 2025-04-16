@@ -16,7 +16,7 @@ const Tiptap = (props: Props) => {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'w-full h-full prose prose-sm focus:outline-none prose-headings:text-stone-400 prose-p:text-stone-500'
+        class: 'w-full h-full prose prose-sm focus:outline-none prose-headings:text-stone-400 prose-p:text-stone-500 max-w-full'
       }
     },
     extensions,
@@ -30,7 +30,7 @@ const Tiptap = (props: Props) => {
       <>
         <EditorMenuBar editor={editor} />
         <EditorContent 
-          className="flex px-3 py-2 h-auto w-[420px] rounded-md border text-stone-400 border-stone-800 bg-stone-900  text-sm ring-offset-indigo-500 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-stone-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-200 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" 
+          className="flex px-3 py-2 h-auto min-h-[300px] w-full rounded-md border text-stone-400 border-stone-800 bg-stone-900 text-sm ring-offset-indigo-500 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-stone-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-200 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" 
           editor={editor} 
         />
 

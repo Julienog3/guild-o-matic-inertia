@@ -10,13 +10,13 @@ import {
   SelectValue,
 } from '~/components/ui/select'
 import { Input } from '~/components/ui/input'
-import { Textarea } from '~/components/ui/textarea'
 import { Button } from '~/components/ui/button'
 import { router, usePage } from '@inertiajs/react'
 import { useToast } from '~/components/ui/use-toast'
 import { Checkbox } from '~/components/ui/checkbox'
 import { Switch } from '~/components/ui/switch'
 import Tiptap from '~/components/ui/tiptap'
+import { Dropzone } from '../ui/dropzone'
 
 const formSchema = z.object({
   gw2GuildId: z.string(),
@@ -24,7 +24,7 @@ const formSchema = z.object({
   categories: z.number().array(),
   description: z.string(),
   thumbnail: z.any(),
-  isRecruiting: z.boolean(),
+  isRecruiting: z.boolean().optional(),
 })
 
 interface Props {
@@ -88,7 +88,7 @@ export function GuildForm(props: Props) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-8 w-full">
         {guilds && (
           <FormField
             control={form.control}
@@ -188,12 +188,10 @@ export function GuildForm(props: Props) {
           name="thumbnail"
           render={({ field: { value, onChange, ...fieldProps } }) => (
             <FormItem>
-              <FormLabel>Illustration</FormLabel>
+              <FormLabel>Illustration {fieldProps.name}</FormLabel>
               <FormControl>
-                <Input
+                <Dropzone
                   {...fieldProps}
-                  type="file"
-                  className="w-[300px]"
                   onChange={(event) => onChange(event.target.files && event.target.files[0])}
                 />
               </FormControl>

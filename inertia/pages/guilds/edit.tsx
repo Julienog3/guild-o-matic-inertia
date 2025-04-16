@@ -20,22 +20,13 @@ export default function Create(props: Props) {
   return (
     <>
       <Head title="Modification de guilde" />
-      <main className="max-w-screen-xl w-full mx-auto my-8">
-        <Breadcrumb className="mb-4">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Accueil</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Modification d'une guilde</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        <h2 className="scroll-m-20 text-white border-b border-stone-800 pb-2 text-3xl font-semibold tracking-tight mt-6 first:mt-0">
+      <main className="max-w-screen-md w-full mx-auto mb-12 mt-24">
+        <h2 className="scroll-m-20 text-white pb-2 text-3xl font-semibold tracking-tight mt-6 mb-2 first:mt-0">
           Modification d'une guilde
         </h2>
-        <GuildForm guild={guild} categories={categories} />
+        <section className="flex flex-col w-full min-w-96 bg-stone-900 border border-stone-800 rounded-lg p-4">
+          <GuildForm guild={guild} categories={categories} />
+        </section>
       </main>
     </>
   )
