@@ -1,7 +1,6 @@
 import GuildsController from '#controllers/guilds_controller'
 import { InferPageProps } from '@adonisjs/inertia/types'
 import { Badge } from '~/components/ui/badge'
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,10 +9,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '~/components/ui/breadcrumb'
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import GuildDetails from '~/components/guilds/guild_details'
 import GuildDescriptionViewer from '~/components/guilds/guild_description_viewer'
-import { CalendarIcon, ClockIcon } from 'lucide-react'
+import { CalendarIcon, ClockIcon, MessagesSquareIcon } from 'lucide-react'
+import { Button } from '~/components/ui/button'
 
 export default function Show(props: InferPageProps<GuildsController, 'show'>) {
   const { guild, isOwner } = props
@@ -52,20 +52,20 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
                 {guild.isRecruiting ? 'Ouvert' : 'Fermé'}
               </div>
             </li>
-            <li className="flex items-center gap-2">
+            {guild.createdAt && <li className="flex items-center gap-2">
               <CalendarIcon className="w-4 h-4 stroke-stone-400" />
               <p className="text-stone-400 flex gap-2">
                 Publié le
                 <span className="text-white font-medium">{new Date(guild.createdAt).toLocaleDateString()}</span>
-              </p>
-            </li>
-            <li className="flex items-center gap-2">
+              </p> 
+            </li>}
+            {guild.updatedAt && <li className="flex items-center gap-2">
               <ClockIcon className="w-4 h-4 stroke-stone-400" />
               <p className="text-stone-400 flex gap-2">
                 Mis à jour le
                 <span className="text-white font-medium">{new Date(guild.updatedAt).toLocaleDateString()}</span>
               </p>
-            </li>
+            </li>}
           </ul>
         </div>
         <img
@@ -88,7 +88,7 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
         <aside className="flex flex-col gap-4 w-full md:z-10 md:-translate-y-32 md:sticky md:top-52 md:w-auto">
           <GuildDetails guild={guild} displayActions={isOwner} />
           <div className="flex flex-col w-full min-w-96 md:w-fit bg-stone-900 border border-stone-800 rounded-lg p-4">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-white mb-2">Types d'activités proposés</h3>
+            <h3 className="scroll-m-20 text-xl font-semibold tracking-tight text-white mb-2">Types d'activités proposés</h3>
             <div className="flex gap-2">
               {guild.categories.map((category) => (
                 <Badge key={category.id} variant="default">
@@ -96,7 +96,10 @@ export default function Show(props: InferPageProps<GuildsController, 'show'>) {
                 </Badge>
               ))}
             </div>
-          </div>
+          </div> 
+          {guild.discordLink && <Button asChild>
+            <Link target="_blank" href={guild.discordLink}><MessagesSquareIcon className="w-4 h-4" /> Rejoindre le serveur Discord</Link>
+          </Button>}
         </aside>
       </main>
     </>

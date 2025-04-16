@@ -11,6 +11,7 @@ import { cuid } from '@adonisjs/core/helpers'
 import { editGuild, removeGuild } from '#abilities/main'
 import GuildService from '#services/guild_service'
 import logger from '@adonisjs/core/services/logger'
+import GuildDto from '../dto/guild.js'
 
 @inject()
 export default class GuildsController {
@@ -108,9 +109,10 @@ export default class GuildsController {
     await auth.check()
 
     const guild = await this.guildService.find(id)
+    const guildToJson = new GuildDto(guild).toJson()
 
     const guildWithDetails = {
-      ...(guild.serialize() as Guild),
+      ...guildToJson,
       details: await this.gw2Service.getGuildDetails(guild.owner.gw2ApiKey, guild.gw2GuildId),
     }
 
