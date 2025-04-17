@@ -25,7 +25,7 @@ router.get('/sign-up/email-verification', [AuthController, 'emailVerification'])
 router.get('/sign-in', [AuthController, 'signIn']).use(middleware.guest())
 router.get('/account/profile', [ProfileController, 'index']).use([middleware.auth()])
 router.get('/account/guilds', [ProfileController, 'guilds']).use([middleware.auth()])
-router.get('/verify-email', [AuthController, 'verifyEmail']).use(middleware.auth()).as('auth.verify_email')
+// router.get('/verify-email', [AuthController, 'verifyEmail']).use(middleware.auth()).as('auth.verify_email')
 router
   .group(() => {
     router.post('/login', [AuthController, 'login'])
