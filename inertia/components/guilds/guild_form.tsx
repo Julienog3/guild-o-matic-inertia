@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormControl, FormField, FormItem, FormLabel } from '~/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form'
 import {
   Select,
   SelectContent,
@@ -17,6 +17,7 @@ import { Checkbox } from '~/components/ui/checkbox'
 import { Switch } from '~/components/ui/switch'
 import Tiptap from '~/components/ui/tiptap'
 import { Dropzone } from '../ui/dropzone'
+import { PageProps } from '@adonisjs/inertia/types'
 
 const formSchema = z.object({
   gw2GuildId: z.string(),
@@ -24,7 +25,7 @@ const formSchema = z.object({
   categories: z.number().array(),
   description: z.string(),
   thumbnail: z.any(),
-  isRecruiting: z.boolean().optional(),
+  isRecruiting: z.boolean().nullable(),
 })
 
 interface Props {
@@ -39,14 +40,15 @@ export function GuildForm(props: Props) {
 
   const {
     props: { errors },
-  } = usePage()
+  } = usePage<PageProps>()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...guild,
       thumbnail: null,
-      categories: [],
+      categories: guild ? guild.categories.map(({ id }) => id) : [],
+      isRecruiting: guild ? !!guild.isRecruiting : false
     },
   })
 
@@ -88,7 +90,7 @@ export function GuildForm(props: Props) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-8 w-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-6 w-full">
         {guilds && (
           <FormField
             control={form.control}
@@ -140,8 +142,8 @@ export function GuildForm(props: Props) {
                               return checked
                                 ? field.onChange([...field.value, category.id])
                                 : field.onChange(
-                                    field.value?.filter((value) => value !== category.id)
-                                  )
+                                  field.value?.filter((value) => value !== category.id)
+                                )
                             }}
                           />
                         </FormControl>
@@ -182,19 +184,21 @@ export function GuildForm(props: Props) {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="thumbnail"
           render={({ field: { value, onChange, ...fieldProps } }) => (
             <FormItem>
-              <FormLabel>Illustration {fieldProps.name}</FormLabel>
+              <FormLabel>Illustration</FormLabel>
               <FormControl>
                 <Dropzone
                   {...fieldProps}
+                  value={value}
                   onChange={(event) => onChange(event.target.files && event.target.files[0])}
                 />
               </FormControl>
+              {errors && <FormMessage>{errors[fieldProps.name]}</FormMessage>}
             </FormItem>
           )}
         />

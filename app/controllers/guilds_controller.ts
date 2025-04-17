@@ -11,6 +11,7 @@ import { cuid } from '@adonisjs/core/helpers'
 import { editGuild, removeGuild } from '#abilities/main'
 import GuildService from '#services/guild_service'
 import GuildDto from '../dto/guild.js'
+import { CategoryService } from '#services/category_service'
 
 @inject()
 export default class GuildsController {
@@ -123,16 +124,19 @@ export default class GuildsController {
     return await inertia.render('guilds/show', { guild: guildWithDetails, isOwner })
   }
 
-  async edit({ params, inertia }: HttpContext) {
-    const guild = await Guild.query()
-      .where('id', params.id)
-      .preload('owner')
-      .preload('categories')
-      .firstOrFail()
+  @inject()
+  async edit({ params, inertia }: HttpContext, categoryService: CategoryService) {
+    const guild = await this.guildService.find(params.id)
+    const guildToJson = new GuildDto(guild).toJson()
 
-    const categories = await Category.query()
+    const guildWithDetails = {
+      ...guildToJson,
+      details: await this.gw2Service.getGuildDetails(guild.owner.gw2ApiKey, guild.gw2GuildId),
+    }
 
-    return await inertia.render('guilds/edit', { guild, categories })
+    const categories = await categoryService.all()
+
+    return await inertia.render('guilds/edit', { guild: guildWithDetails, categories })
   }
 
   async update({ params, bouncer, request, response }: HttpContext) {
@@ -142,7 +146,11 @@ export default class GuildsController {
       return response.abort({ message: 'Cannot edit guild.' }, 403)
     }
 
-    const { thumbnail, ...payload } = await request.validateUsing(editGuildValidator)
+    const { thumbnail, categories, ...payload } = await request.validateUsing(editGuildValidator)
+
+    if (categories) {
+      await guild.related('categories').sync(categories)
+    }
 
     if (thumbnail) {
       const fileUrl = `${cuid()}.${thumbnail.extname}`

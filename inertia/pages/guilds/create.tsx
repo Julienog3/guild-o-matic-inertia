@@ -1,12 +1,4 @@
-import { useForm, usePage } from '@inertiajs/react'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '~/components/ui/breadcrumb'
+import { Head, usePage } from '@inertiajs/react'
 import { GuildForm } from '../../components/guilds/guild_form'
 
 interface Props {
@@ -21,22 +13,16 @@ export default function Create(props: Props) {
   } = usePage()
 
   return (
-    <main className="max-w-screen-xl w-full mx-auto my-8">
-      <Breadcrumb className="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Accueil</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Ajout d'une guilde</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <h2 className="scroll-m-20 border-b border-stone-800 pb-2 text-3xl text-white font-semibold tracking-tight first:mt-0 mb-4">
-        Ajout d'une guilde
-      </h2>
-      <GuildForm guilds={guilds} categories={categories} />
-    </main>
+    <>
+      <Head title="Ajout de guilde" />
+      <main className="max-w-screen-md w-full mx-auto mb-12 mt-24">
+        <h2 className="scroll-m-20 text-white pb-2 text-3xl font-semibold tracking-tight mt-6 mb-2 first:mt-0">
+          Ajout d'une guilde
+        </h2>
+        <section className="flex flex-col w-full min-w-96 bg-stone-900 border border-stone-800 rounded-lg p-4">
+          <GuildForm guilds={guilds} categories={categories} />
+        </section>
+      </main>
+    </>
   )
 }

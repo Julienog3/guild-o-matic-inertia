@@ -6,7 +6,7 @@ export const editGuildValidator = vine.compile(
     discordLink: vine.string().optional(),
     categories: vine.array(vine.number()).optional(),
     description: vine.string(),
-    isRecruiting: vine.boolean(),
+    isRecruiting: vine.boolean().optional(),
     thumbnail: vine
       .file({
         size: '2mb',
